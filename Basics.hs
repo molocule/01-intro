@@ -62,6 +62,7 @@ Try clicking on "Evaluate..." below.
 -}
 
 -- >>> 3 * (4 + 5)
+-- 27
 
 {-
 A Haskell module (like this one) is a list of *definitions*. These definitions
@@ -75,7 +76,9 @@ ex = 3 * (4 + 5)
 We can ask VSCode to calculate these values, just as we did above.
 -}
 
+-- 27
 -- >>> ex
+-- 27
 
 {-
 Whenever we give a name to an expression, it is a good idea to also write down
@@ -104,12 +107,14 @@ Compare the value of a extra-large `Integer`
 -}
 
 -- >>> bigInteger
+-- 12345678901234567890
 
 {-
 with an `Int`
 -}
 
 -- >>> bigInt
+-- -6101065172474983726
 
 {-
 Above, we declared the type of an expression separately from giving it a
@@ -118,6 +123,7 @@ still annotate it with its type using `::`.
 -}
 
 -- >>> 31 * (42 + 56) :: Integer
+-- 3038
 
 {-
 More generally, the type annotation can be attached to any subexpression, not
@@ -125,6 +131,7 @@ just at the top level.
 -}
 
 -- >>> (31 :: Integer) * (42 + 56)
+-- 3038
 
 {-
 It is good style to annotate the type of *every* declaration in a Haskell
@@ -149,20 +156,29 @@ using the same overloaded syntax.
 -}
 
 -- >>> 31 * (42 + 56) :: Double    -- double precision floating point
+-- 3038.0
 
 {-
 Furthermore, you'll also find characters, strings and boolean values.
 -}
 
 -- >>> 'a' :: Char                 -- characters
+-- 'a'
 
 -- >>> "abcd" :: String            -- strings
+-- "abcd"
 
 -- >>> "cis" ++ "552"              -- string concatenation
+-- "cis552"
 
 -- >>> True :: Bool                -- boolean values
+-- True
 
 -- >>> 1 <= 3 || False && 3 > 2    -- boolean operators, comparisons
+-- True
+
+-- >>> 1 <= 3 && False || 3 < 2    -- boolean operators, comparisons
+-- False
 
 {-
 What is a little different about Haskell is that everything is an expression,
@@ -171,6 +187,7 @@ expressions.
 -}
 
 -- >>> (if ex > 28 then 1 else 0) + 2 :: Int
+-- 2
 
 {-
 Now the last basic type, shown below, is subtle. It is a special constant,

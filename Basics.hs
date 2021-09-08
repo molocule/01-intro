@@ -198,6 +198,7 @@ this basic type is that there is only *one* value with type `()`.
 -}
 
 -- >>> () :: ()            -- 'unit' (both value and type have the same syntax)
+-- ()
 
 {-
 What is Abstraction?
@@ -227,12 +228,34 @@ We call functions by providing them with arguments.
 -}
 
 -- >>> pat 31 42 56
+-- 3038
 
 {-
 No parentheses are necessary, unless the argument itself is a compound expression.
 -}
 
 -- >>> pat (30 + 1) 42 56
+-- 3038
+
+-- >>> pat 0 1 1
+-- 0
+
+claudiafunc :: Integer -> Integer -> Integer -> Integer
+claudiafunc a b c = (a + b * c) * 0
+
+-- >>> claudiafunc 1 1 1
+-- 0
+
+intToBool :: Int -> Bool
+intToBool a = a == 0
+
+-- >>> intToBool 0
+-- True
+
+-- claudiafold :: Integer -> [Integer] -> [Integer]
+-- claudiafold a [b] = foldr (:) a b
+
+-- >>> claudiafold 1 2
 
 {-
 The important question is not "What does this function do?"
@@ -748,7 +771,7 @@ l1 :: [Double]
 l1 = [1.0, 2.0, 3.0, 4.0]
 
 l2 :: [Int]
-l2 = undefined -- make a list of numbers
+l2 = [undefined] -- make a list of numbers
 
 {-
 Lists can contain structured data...
@@ -820,15 +843,21 @@ c2 = 1 : []
 Try evaluating `c1` and `c2`.
 -}
 
+-- >>> cons 1 [2]
+-- [1,2]
+
 -- >>> c1
+-- [True,False,False]
 --
 -- >>> c2
+-- [1]
 --
 
 {-
 And check out the type of `c3`.
 -}
 
+c3 :: [[a]]
 c3 = [] : []
 
 {-
@@ -973,7 +1002,9 @@ range :: Int -> Int -> [Int]
 **Step 3**: Define the function. This part is for you to do for your quiz.
 -}
 
-range i j = undefined
+range i j = if j < i then [] else i : range (i + 1) j
+
+-- range i j = if j < i then [] else i : (:) range (i + 1) j []
 
 {-
 **Step 4**: Run the tests.
@@ -1041,6 +1072,18 @@ their sum.
 
 **Step 1**: Write test cases.
 -}
+
+-- range :: Int -> Int -> [Int]
+-- range a b =
+
+-- rangeTestCases :: Test
+-- rangeTestCases =
+--   TestList
+--     [ range  3  6 ~?= [3,4,5,6]
+--       range 42 42 ~?= [42]
+--       range 10  5 ~?= []
+--     ]
+-- >>> l = ['a','b','c']
 
 listAddTests :: Test
 listAddTests =
@@ -1112,7 +1155,8 @@ listIncr :: [Int] -> [Int]
 **Step 3**: Define the function.
 -}
 
-listIncr = undefined
+listIncr [] = []
+listIncr (x : xs) = x + 1 : listIncr xs
 
 {-
 **Step 4**: Run the tests.

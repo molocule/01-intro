@@ -74,25 +74,27 @@ for this new type of `DList`s. Remember that `DList a` is just a synonym for `[a
 -- >>> toList empty
 -- []
 empty :: DList a
-empty = undefined
+empty = id
 
 -- | Create a DList containing a single element
 -- >>> toList (singleton "a")
 -- ["a"]
 singleton :: a -> DList a
-singleton x = undefined
+singleton x = \a -> x : a
+
+-- (x :)
 
 -- | Append two DLists together
 -- >>> toList ((singleton "a") `append` (singleton "b"))
 -- ["a","b"]
 append :: DList a -> DList a -> DList a
-append = undefined
+append a b = \x -> a (b x)
 
 -- | Construct a DList from a head element and tail
 -- >>> toList (cons "a" (singleton "b"))
 -- ["a","b"]
 cons :: a -> DList a -> DList a
-cons = undefined
+cons elt dl = append (singleton elt) dl
 
 {-
 Now write a function to convert a regular list to a `DList` using the above
@@ -103,7 +105,9 @@ definitions and `foldr`.
 -- >>> toList (fromList [1,2,3])
 -- [1,2,3]
 fromList :: [a] -> DList a
-fromList = undefined
+fromList = foldr (append . singleton) empty
+
+-- append (singleton x) (fromList xs)
 
 {-
 Micro-benchmarks
@@ -140,6 +144,7 @@ micro1 = last (t 10000 "")
     *DList> micro1
     's'
     (2.80 secs, 4,300,584,976 bytes)
+    (1.07 secs, 4,300,091,272 bytes)
 
 This version does the same, except that this time it uses the `DList` operations.
 -}
@@ -155,6 +160,7 @@ micro2 = last (toList (t 10000 empty))
      *DList> micro2
      's'
      (0.02 secs, 10,359,248 bytes)
+     (0.01 secs, 4,666,224 bytes)
 
 Notice how the second version is *much* faster and uses much less memory. Why
 is this the case? The `++` operator for lists takes time proportional to its
@@ -193,6 +199,7 @@ constructing this list---we only want to time the reverse operation.)
     *DList> last bigList
     10000
     (0.01 secs, 882,216 bytes)
+    (0.00 secs, 987,688 bytes)
 
 Let's try to reverse this list. How long does it take? How many bytes? Give it a try.
 -}
@@ -208,6 +215,7 @@ singleton section `(:[])`, but that doesn't really help. It's fundamentally
 the same algorithm. (I also find this 'point-free' version much harder to
 understand! Try to convince yourself that this definition really is doing the
 same thing as `naiveReverse`!)
+  (1.07 secs, 4,295,394,080 bytes)
 -}
 
 ivoryTowerReverse :: [a] -> [a]
@@ -227,6 +235,8 @@ micro4 = last (ivoryTowerReverse bigList)
 Now watch what happens when we use a `DList` instead. Compare this definition
 with the `naiveReverse` one above. It's still easy to read. All we have done
 is replace the standard list operations with the `DList` versions, through a fairly mechanical process.
+
+(1.07 secs, 4,299,650,256 bytes)
 -}
 
 dlistReverse :: [a] -> [a]
@@ -240,6 +250,7 @@ micro5 = last (dlistReverse bigList)
 
 {-
      *DList> micro5
+     (0.01 secs, 3,865,088 bytes)
 
 We can also replace the list operations in ivoryTowerReverse with their DList
 analogues, also a mechanical process.
@@ -253,6 +264,7 @@ micro6 = last (dlistIvoryTowerReverse bigList)
 
 {-
      *DList> micro6
+     (0.01 secs, 2,745,176 bytes)
 
 (Of course, it is often better to use the standard library definition of
 common operations. How does the built-in operation, which has been optimized
@@ -264,5 +276,6 @@ micro7 = last (reverse bigList)
 
 {-
      *DList> micro7
+     (0.00 secs, 504,648 bytes)
 
 -}

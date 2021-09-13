@@ -29,9 +29,9 @@ We'll call it the Brown Fox code.  Here's how it works:
     - Then reverse the order of the lines in the file.
 -}
 
-import Data.Char
-import Data.Maybe
-import Test.HUnit
+import Data.Char (toUpper)
+import Data.Maybe ()
+import Test.HUnit (Test (TestList), runTestTT, (~?=))
 
 {-
 First, we make a lookup list (aka association list) containing each pair of
@@ -85,6 +85,7 @@ character in our code, (i.e. for punctuation) we should leave it alone.
 encodeChar :: Char -> Char
 encodeChar c = undefined
 
+testEncodeChar :: IO Test.HUnit.Base.Counts
 testEncodeChar =
   runTestTT $
     TestList

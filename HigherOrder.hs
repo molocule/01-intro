@@ -252,7 +252,8 @@ arguments before substituting them into the body of a defined function.
 
     doTwicePlus20 0 == doTwice (plus 20) 0        {- unfold doTwice -}
                     == (plus 20) ((plus 20) 0)
-                    ... undefined (fill this part in) ...
+                    == 20 + ((plus 20) 0)
+                    == 20 + (20 + 0)
                     == 20 + 20 + 0
                     == 40
 

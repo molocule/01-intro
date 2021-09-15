@@ -96,7 +96,8 @@ append = (.)
 -- >>> toList (cons "a" (singleton "b"))
 -- ["a","b"]
 cons :: a -> DList a -> DList a
-cons elt dl = append (singleton elt) dl
+-- cons elt dl = append (singleton elt) dl
+cons = (.) . (:)
 
 {-
 Now write a function to convert a regular list to a `DList` using the above
@@ -107,7 +108,9 @@ definitions and `foldr`.
 -- >>> toList (fromList [1,2,3])
 -- [1,2,3]
 fromList :: [a] -> DList a
-fromList = foldr (append . singleton) empty
+-- fromList = foldr (append . singleton) empty
+-- fromList = foldr ((.) . (:)) id
+fromList = (++)
 
 -- append (singleton x) (fromList xs)
 

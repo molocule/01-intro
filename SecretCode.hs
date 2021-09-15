@@ -83,7 +83,7 @@ character in our code, (i.e. for punctuation) we should leave it alone.
 -- >>> encodeChar '.'
 -- '.
 encodeChar :: Char -> Char
-encodeChar c = undefined
+encodeChar c = fromMaybe c (lookup c code)
 
 testEncodeChar =
   runTestTT $
@@ -130,7 +130,7 @@ So...
 -}
 
 encodeContent :: String -> String
-encodeContent = undefined
+encodeContent = unlines . reverse . map encodeLine . lines
 
 testEncodeContent =
   runTestTT $

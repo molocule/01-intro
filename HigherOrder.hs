@@ -633,7 +633,7 @@ toUpperString' :: String -> String
 toUpperString' xs = map toUpper xs
 
 shiftPoly' :: XY -> Polygon -> Polygon
-shiftPoly' d = undefined
+shiftPoly' d = map (shiftXY d)
 
 {-
 Much better.  But let's make sure our refactoring didn't break anything!
@@ -679,7 +679,7 @@ We can write this more cleanly with map, of course:
 -}
 
 listIncr' :: [Int] -> [Int]
-listIncr' = undefined
+listIncr' = map plus1
 
 {-
 Computation Pattern: Folding
@@ -757,7 +757,7 @@ from our list-length function?
 -}
 
 len' :: [a] -> Int
-len' = undefined
+len' = foldr (\_ count -> count + 1) 0
 
 {-
 Once you have defined `len` in this way, see if you can trace how it
@@ -778,7 +778,7 @@ factorial 0 = 1
 factorial n = n * factorial (n -1)
 
 factorial' :: Int -> Int
-factorial' n = undefined
+factorial' n = foldr (\n -> (* n)) 1
 
 {-
 OK, one more.  The standard list library function `filter` has this
@@ -803,7 +803,7 @@ testFilter =
 Can we implement filter using foldr?  Sure!
 -}
 
-filter pred = undefined
+filter pred = foldr (pred)
 
 runTests :: IO Counts
 runTests = runTestTT $ TestList [testMap, testFoldr, testFilter]

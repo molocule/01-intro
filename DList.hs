@@ -80,7 +80,8 @@ empty = id
 -- >>> toList (singleton "a")
 -- ["a"]
 singleton :: a -> DList a
-singleton x = \a -> x : a
+-- singleton x = \a -> x : a
+singleton = (:)
 
 -- (x :)
 
@@ -88,7 +89,8 @@ singleton x = \a -> x : a
 -- >>> toList ((singleton "a") `append` (singleton "b"))
 -- ["a","b"]
 append :: DList a -> DList a -> DList a
-append a b = \x -> a (b x)
+-- append a b = \x -> a (b x)
+append = (.)
 
 -- | Construct a DList from a head element and tail
 -- >>> toList (cons "a" (singleton "b"))

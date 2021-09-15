@@ -29,6 +29,7 @@ We'll call it the Brown Fox code.  Here's how it works:
     - Then reverse the order of the lines in the file.
 -}
 
+import Control.Monad.ST.Lazy (strictToLazyST)
 import Data.Char
 import Data.Maybe
 import Test.HUnit
@@ -160,7 +161,9 @@ create a new filename by appending a new extension to it.
 encodeFile :: FilePath -> IO ()
 encodeFile f = do
   let outFile = f ++ ".code"
-  undefined
+  str <- readFile f
+  writeFile outFile $ encodeContent str
+  return ()
 
 {-
 Finally, lets put it all together into a "main" function that reads in

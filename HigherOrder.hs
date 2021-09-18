@@ -778,7 +778,7 @@ factorial 0 = 1
 factorial n = n * factorial (n -1)
 
 factorial' :: Int -> Int
-factorial' n = foldr (\n -> (* n)) 1
+factorial' n = foldr (*) 1 [1 .. n]
 
 {-
 OK, one more.  The standard list library function `filter` has this
@@ -803,7 +803,7 @@ testFilter =
 Can we implement filter using foldr?  Sure!
 -}
 
-filter pred = foldr (pred)
+filter pred = foldr (\x xs -> if pred x then x : xs else xs) []
 
 runTests :: IO Counts
 runTests = runTestTT $ TestList [testMap, testFoldr, testFilter]
